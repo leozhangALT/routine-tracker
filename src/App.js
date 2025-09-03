@@ -72,7 +72,7 @@ const RoutineTracker = () => {
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '8.5px',
+          gap: '8px',
           marginBottom: '20px'
         }}>
           {weekDays.map((date, i) => (
