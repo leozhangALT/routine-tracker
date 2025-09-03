@@ -56,17 +56,23 @@ const RoutineTracker = () => {
     <div style={{
       maxWidth: '400px',
       margin: '0 auto',
-      padding: '20px',
+      padding: '10px',
       fontFamily: 'system-ui, sans-serif'
     }}>
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
         Routine Tracker
       </h1>
+      <div style={{
+          display: 'flex',
+          width: '100%',
+          justifyContent: 'center'
+        }}
+      >
         {/* Day headers */}
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
-          gap: '10px',
+          gap: '9px',
           marginBottom: '20px'
         }}>
           {weekDays.map((date, i) => (
@@ -90,6 +96,7 @@ const RoutineTracker = () => {
             </div>
           ))}
         </div>
+      </div>
 
         {/* Routine rows */}
         {routines.map(routine => (
