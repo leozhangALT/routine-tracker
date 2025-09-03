@@ -4,13 +4,12 @@ const RoutineTracker = () => {
   const [completedDates, setCompletedDates] = useState({});
 
   const routines = [
-    { id: 1, color: '#3b82f6' }, // blue - shampoo
-    { id: 2, color: '#8b5cf6' }, // purple - retinol  
-    { id: 3, color: '#10b981' }, // green - exfoliating cleanser
-    { id: 4, color: '#f59e0b' }  // orange - body lotion
+    { id: 1, color: '#3b82f6', name: 'Shampoo' },
+    { id: 2, color: '#8b5cf6', name: 'Retinol' },
+    { id: 3, color: '#10b981', name: 'Exfoliating Cleanser' },
+    { id: 4, color: '#f59e0b', name: 'Body Lotion' }
   ];
 
-  // Get past 7 days ending with today
   const today = new Date();
   const weekDays = [];
   for (let i = 6; i >= 0; i--) {
@@ -21,9 +20,7 @@ const RoutineTracker = () => {
 
   const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
 
-  const formatDateKey = (date) => {
-    return date.toISOString().split('T')[0];
-  };
+  const formatDateKey = (date) => date.toISOString().split('T')[0];
 
   const isCompleted = (routineId, date) => {
     const dateKey = formatDateKey(date);
@@ -48,9 +45,7 @@ const RoutineTracker = () => {
     });
   };
 
-  const isToday = (date) => {
-    return formatDateKey(date) === formatDateKey(today);
-  };
+  const isToday = (date) => formatDateKey(date) === formatDateKey(today);
 
   return (
     <div style={{
@@ -62,13 +57,13 @@ const RoutineTracker = () => {
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
         Routine Tracker
       </h1>
+
+      {/* Day headers */}
       <div style={{
-          display: 'flex',
-          width: '100%',
-          justifyContent: 'center'
-        }}
-      >
-        {/* Day headers */}
+        display: 'flex',
+        width: '100%',
+        justifyContent: 'center'
+      }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
@@ -98,9 +93,31 @@ const RoutineTracker = () => {
         </div>
       </div>
 
-        {/* Routine rows */}
-        {routines.map(routine => (
-          <div key={routine.id} style={{
+      {/* Routine rows */}
+      {routines.map(routine => (
+        <div key={routine.id} style={{ marginBottom: '20px' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            marginBottom: '10px'
+          }}>
+            <div style={{
+              width: '12px',
+              height: '12px',
+              borderRadius: '50%',
+              backgroundColor: routine.color,
+              marginRight: '10px'
+            }} />
+            <span style={{
+              fontSize: '18px',
+              fontWeight: '600',
+              color: '#333'
+            }}>
+              {routine.name}
+            </span>
+          </div>
+
+          <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(7, 1fr)',
             gap: '10px',
@@ -130,7 +147,8 @@ const RoutineTracker = () => {
               </div>
             ))}
           </div>
-        ))}
+        </div>
+      ))}
     </div>
   );
 };
