@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 const RoutineTracker = () => {
-  // ✅ Initialize state directly from localStorage
   const [completedDates, setCompletedDates] = useState(() => {
     try {
       const saved = localStorage.getItem('routineTrackerData');
@@ -12,6 +11,8 @@ const RoutineTracker = () => {
     }
   });
 
+  const [today, setToday] = useState(new Date());
+
   const routines = [
     { id: 1, color: '#3b82f6', name: 'Shampoo', emoji: '🧑' },
     { id: 2, color: '#8b5cf6', name: 'Retinol', emoji: '✨' },
@@ -19,17 +20,18 @@ const RoutineTracker = () => {
     { id: 4, color: '#f59e0b', name: 'Body Lotion', emoji: '🧴' }
   ];
 
-  const today = new Date();
+  const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+  const formatDateKey = (date) => date.toISOString().split('T')[0];
+  const isToday = (date) => formatDateKey(date) === formatDateKey(today);
+
+  // Build last 7 days dynamically
   const weekDays = [];
   for (let i = 6; i >= 0; i--) {
     const day = new Date(today);
     day.setDate(today.getDate() - i);
     weekDays.push(day);
   }
-
-  const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-  const formatDateKey = (date) => date.toISOString().split('T')[0];
 
   const isCompleted = (routineId, date) => {
     const dateKey = formatDateKey(date);
@@ -54,12 +56,23 @@ const RoutineTracker = () => {
     });
   };
 
-  const isToday = (date) => formatDateKey(date) === formatDateKey(today);
-
-  // ✅ Save to localStorage whenever data changes
+  // Save progress to localStorage
   useEffect(() => {
     localStorage.setItem('routineTrackerData', JSON.stringify(completedDates));
   }, [completedDates]);
+
+  // Auto-update "today" at midnight without reloading
+  useEffect(() => {
+    const now = new Date();
+    const msUntilMidnight =
+      new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1) - now;
+
+    const timer = setTimeout(() => {
+      setToday(new Date()); // Update "today" so UI shifts
+    }, msUntilMidnight);
+
+    return () => clearTimeout(timer);
+  }, [today]);
 
   return (
     <div style={{
@@ -73,11 +86,7 @@ const RoutineTracker = () => {
       </h1>
 
       {/* Day headers */}
-      <div style={{
-        display: 'flex',
-        width: '100%',
-        justifyContent: 'center'
-      }}>
+      <div style={{ display: 'flex', width: '100%', justifyContent: 'center' }}>
         <div style={{
           display: 'grid',
           gridTemplateColumns: 'repeat(7, 1fr)',
@@ -85,10 +94,7 @@ const RoutineTracker = () => {
           marginBottom: '20px'
         }}>
           {weekDays.map((date, i) => (
-            <div key={i} style={{
-              textAlign: 'center',
-              padding: '10px 5px'
-            }}>
+            <div key={i} style={{ textAlign: 'center', padding: '10px 5px' }}>
               <div style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>
                 {dayLabels[date.getDay()]}
               </div>
