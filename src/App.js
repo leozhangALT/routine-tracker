@@ -62,14 +62,6 @@ const RoutineTracker = () => {
       <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
         Routine Tracker
       </h1>
-
-      <div style={{
-        backgroundColor: 'white',
-        borderRadius: '10px',
-        padding: '20px',
-        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
-      }}>
-        
         {/* Day headers */}
         <div style={{
           display: 'grid',
@@ -115,14 +107,14 @@ const RoutineTracker = () => {
                 <button
                   onClick={() => toggleCompleted(routine.id, date)}
                   style={{
-                    width: '35px',
-                    height: '35px',
+                    width: '30px',
+                    height: '30px',
                     borderRadius: '50%',
                     border: '2px solid #ddd',
                     backgroundColor: isCompleted(routine.id, date) ? routine.color : 'white',
                     color: isCompleted(routine.id, date) ? 'white' : '#666',
                     cursor: 'pointer',
-                    fontSize: '16px',
+                    fontSize: '14px',
                     fontWeight: 'bold'
                   }}
                 >
@@ -132,8 +124,6 @@ const RoutineTracker = () => {
             ))}
           </div>
         ))}
-
-      </div>
     </div>
   );
 };
