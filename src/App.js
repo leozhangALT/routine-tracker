@@ -1,7 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const RoutineTracker = () => {
-  const [completedDates, setCompletedDates] = useState({});
+  // ✅ Initialize state directly from localStorage
+  const [completedDates, setCompletedDates] = useState(() => {
+    try {
+      const saved = localStorage.getItem('routineTrackerData');
+      return saved ? JSON.parse(saved) : {};
+    } catch (e) {
+      console.error('Error parsing localStorage data', e);
+      return {};
+    }
+  });
 
   const routines = [
     { id: 1, color: '#3b82f6', name: 'Shampoo', emoji: '🧑' },
@@ -46,6 +55,11 @@ const RoutineTracker = () => {
   };
 
   const isToday = (date) => formatDateKey(date) === formatDateKey(today);
+
+  // ✅ Save to localStorage whenever data changes
+  useEffect(() => {
+    localStorage.setItem('routineTrackerData', JSON.stringify(completedDates));
+  }, [completedDates]);
 
   return (
     <div style={{
