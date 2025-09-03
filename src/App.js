@@ -1,25 +1,141 @@
-import logo from './logo.svg';
-import './App.css';
+import React, { useState } from 'react';
 
-function App() {
+const RoutineTracker = () => {
+  const [completedDates, setCompletedDates] = useState({});
+
+  const routines = [
+    { id: 1, color: '#3b82f6' }, // blue - shampoo
+    { id: 2, color: '#8b5cf6' }, // purple - retinol  
+    { id: 3, color: '#10b981' }, // green - exfoliating cleanser
+    { id: 4, color: '#f59e0b' }  // orange - body lotion
+  ];
+
+  // Get past 7 days ending with today
+  const today = new Date();
+  const weekDays = [];
+  for (let i = 6; i >= 0; i--) {
+    const day = new Date(today);
+    day.setDate(today.getDate() - i);
+    weekDays.push(day);
+  }
+
+  const dayLabels = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
+
+  const formatDateKey = (date) => {
+    return date.toISOString().split('T')[0];
+  };
+
+  const isCompleted = (routineId, date) => {
+    const dateKey = formatDateKey(date);
+    return completedDates[routineId]?.includes(dateKey) || false;
+  };
+
+  const toggleCompleted = (routineId, date) => {
+    const dateKey = formatDateKey(date);
+    setCompletedDates(prev => {
+      const routineDates = prev[routineId] || [];
+      if (routineDates.includes(dateKey)) {
+        return {
+          ...prev,
+          [routineId]: routineDates.filter(d => d !== dateKey)
+        };
+      } else {
+        return {
+          ...prev,
+          [routineId]: [...routineDates, dateKey]
+        };
+      }
+    });
+  };
+
+  const isToday = (date) => {
+    return formatDateKey(date) === formatDateKey(today);
+  };
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div style={{
+      maxWidth: '400px',
+      margin: '0 auto',
+      padding: '20px',
+      fontFamily: 'system-ui, sans-serif'
+    }}>
+      <h1 style={{ textAlign: 'center', marginBottom: '30px' }}>
+        Routine Tracker
+      </h1>
+
+      <div style={{
+        backgroundColor: 'white',
+        borderRadius: '10px',
+        padding: '20px',
+        boxShadow: '0 2px 10px rgba(0,0,0,0.1)'
+      }}>
+        
+        {/* Day headers */}
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'repeat(7, 1fr)',
+          gap: '10px',
+          marginBottom: '20px'
+        }}>
+          {weekDays.map((date, i) => (
+            <div key={i} style={{
+              textAlign: 'center',
+              padding: '10px 5px'
+            }}>
+              <div style={{ fontSize: '12px', color: '#666', marginBottom: '5px' }}>
+                {dayLabels[date.getDay()]}
+              </div>
+              <div style={{
+                fontSize: '16px',
+                fontWeight: 'bold',
+                padding: '5px',
+                borderRadius: '5px',
+                backgroundColor: isToday(date) ? '#e3f2fd' : 'transparent',
+                color: isToday(date) ? '#1976d2' : '#333'
+              }}>
+                {date.getDate()}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        {/* Routine rows */}
+        {routines.map(routine => (
+          <div key={routine.id} style={{
+            display: 'grid',
+            gridTemplateColumns: 'repeat(7, 1fr)',
+            gap: '10px',
+            marginBottom: '10px',
+            padding: '15px',
+            borderRadius: '10px',
+            backgroundColor: routine.color + '20'
+          }}>
+            {weekDays.map((date, i) => (
+              <div key={i} style={{ display: 'flex', justifyContent: 'center' }}>
+                <button
+                  onClick={() => toggleCompleted(routine.id, date)}
+                  style={{
+                    width: '35px',
+                    height: '35px',
+                    borderRadius: '50%',
+                    border: '2px solid #ddd',
+                    backgroundColor: isCompleted(routine.id, date) ? routine.color : 'white',
+                    color: isCompleted(routine.id, date) ? 'white' : '#666',
+                    cursor: 'pointer',
+                    fontSize: '16px',
+                    fontWeight: 'bold'
+                  }}
+                >
+                  {isCompleted(routine.id, date) ? '✓' : ''}
+                </button>
+              </div>
+            ))}
+          </div>
+        ))}
+
+      </div>
     </div>
   );
-}
+};
 
-export default App;
+export default RoutineTracker;
