@@ -4,10 +4,10 @@ const RoutineTracker = () => {
   const [completedDates, setCompletedDates] = useState({});
 
   const routines = [
-    { id: 1, color: '#3b82f6', name: 'Shampoo' },
-    { id: 2, color: '#8b5cf6', name: 'Retinol' },
-    { id: 3, color: '#10b981', name: 'Exfoliating Cleanser' },
-    { id: 4, color: '#f59e0b', name: 'Body Lotion' }
+    { id: 1, color: '#3b82f6', name: 'Shampoo', emoji: '🧑' },
+    { id: 2, color: '#8b5cf6', name: 'Retinol', emoji: '✨' },
+    { id: 3, color: '#10b981', name: 'Exfoliating Cleanser', emoji: '🧼' },
+    { id: 4, color: '#f59e0b', name: 'Body Lotion', emoji: '🧴' }
   ];
 
   const today = new Date();
@@ -95,26 +95,18 @@ const RoutineTracker = () => {
 
       {/* Routine rows */}
       {routines.map(routine => (
-        <div key={routine.id} style={{ marginBottom: '20px' }}>
+        <div key={routine.id} style={{ marginBottom: '25px' }}>
           <div style={{
-            display: 'flex',
-            alignItems: 'center',
+            display: 'inline-block',
+            padding: '5px 12px',
+            backgroundColor: routine.color + '20',
+            color: routine.color,
+            borderRadius: '20px',
+            fontWeight: '600',
+            fontSize: '16px',
             marginBottom: '10px'
           }}>
-            <div style={{
-              width: '12px',
-              height: '12px',
-              borderRadius: '50%',
-              backgroundColor: routine.color,
-              marginRight: '10px'
-            }} />
-            <span style={{
-              fontSize: '18px',
-              fontWeight: '600',
-              color: '#333'
-            }}>
-              {routine.name}
-            </span>
+            {routine.emoji + ' ' + routine.name + ' ' + routine.emoji}
           </div>
 
           <div style={{
@@ -124,7 +116,7 @@ const RoutineTracker = () => {
             marginBottom: '10px',
             padding: '15px',
             borderRadius: '10px',
-            backgroundColor: routine.color + '20'
+            backgroundColor: routine.color + '10'
           }}>
             {weekDays.map((date, i) => (
               <div key={i} style={{ display: 'flex', justifyContent: 'center' }}>
