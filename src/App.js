@@ -124,35 +124,36 @@ const RoutineTracker = () => {
         Routine Tracker
       </h1>
 
-      {/* Day headers */}
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: `repeat(${DAYS}, 1fr)`,
-          // gap: "7px",
-          marginBottom: "20px",
-          textAlign: "center",
-        }}
-      >
-        {headers.map((h, i) => (
-          <div key={i}>
-            <div style={{ fontSize: "12px", color: "#666", marginBottom: "5px" }}>
-              {h.label}
+      <div style={{ display: "flex", justifyContent: "center" }}>
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: `repeat(${DAYS}, 1fr)`,
+            width: "340px",
+            marginBottom: "20px",
+            textAlign: "center",
+          }}
+        >
+          {headers.map((h, i) => (
+            <div key={i}>
+              <div style={{ fontSize: "12px", color: "#666", marginBottom: "5px" }}>
+                {h.label}
+              </div>
+              <div
+                style={{
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  padding: "5px",
+                  borderRadius: "5px",
+                  backgroundColor: h.isToday ? "#e3f2fd" : "transparent",
+                  color: h.isToday ? "#1976d2" : "#333",
+                }}
+              >
+                {h.date}
+              </div>
             </div>
-            <div
-              style={{
-                fontSize: "16px",
-                fontWeight: "bold",
-                padding: "5px",
-                borderRadius: "5px",
-                backgroundColor: h.isToday ? "#e3f2fd" : "transparent",
-                color: h.isToday ? "#1976d2" : "#333",
-              }}
-            >
-              {h.date}
-            </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
 
       {/* Routine rows */}
