@@ -129,7 +129,7 @@ const RoutineTracker = () => {
           style={{
             display: "grid",
             gridTemplateColumns: `repeat(${DAYS}, 1fr)`,
-            width: "340px",
+            width: "325px",
             marginBottom: "20px",
             textAlign: "center",
           }}
